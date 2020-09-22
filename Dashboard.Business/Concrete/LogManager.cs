@@ -26,6 +26,11 @@ namespace Dashboard.Business.Concrete
             return _logDal.GetLast(ip,db,tableName);
         }
 
+        public TimeSpan GetSpendTimes(string serverIp, string serverDb, string tableName, string ip, string day)
+        {
+            return _logDal.GetSpendTimes(serverIp,serverDb,tableName,ip,day);
+        }
+
         public TimeSpan SpendTime(string ip, string db, string tableName, string day, string state)
         {
             return _logDal.SpendTime(ip,db,tableName,day,state);

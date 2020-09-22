@@ -73,6 +73,7 @@
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -110,6 +111,12 @@
     <Compile Include="UserControls\Makineler.Designer.cs">
       <DependentUpon>Makineler.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Rapor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\Rapor.Designer.cs">
+      <DependentUpon>Rapor.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -131,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Makineler.resx">
       <DependentUpon>Makineler.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\Rapor.resx">
+      <DependentUpon>Rapor.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -165,6 +175,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\00_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Resim1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

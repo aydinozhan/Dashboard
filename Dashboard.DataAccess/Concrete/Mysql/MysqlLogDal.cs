@@ -62,7 +62,7 @@ namespace Dashboard.DataAccess.Concrete.Mysql
             {
                 using (_conn = new MySqlConnection(connString))
                 {
-                    string query = string.Format( "select Id,Name from {0} where Date between '{1} 00:00:00' and '{2} 23:59:59' order by Id desc",table,firstDate,lastDate);
+                    string query = string.Format( "select * from {0} where Date between '{1} 00:00:00' and '{2} 23:59:59' order by Id desc",table,firstDate,lastDate);
                     using (MySqlCommand cmd = new MySqlCommand(query, _conn))
                     {
                         _conn.Open();
@@ -74,12 +74,12 @@ namespace Dashboard.DataAccess.Concrete.Mysql
                                 {
                                     Id=reader.GetInt32(0),
                                     Name=reader.GetString(1),
-                                    //LastState = reader.GetString(2),
-                                    //LastDate=reader.GetDateTime(3),
-                                    //State=reader.GetString(4),
-                                    //Date = reader.GetDateTime(5),
-                                    //Time = reader.GetTimeSpan(6),
-                                    //Shift = reader.GetInt32(7)
+                                    LastState = reader.GetString(2),
+                                    LastDate=reader.GetDateTime(3),
+                                    State=reader.GetString(4),
+                                    Date = reader.GetDateTime(5),
+                                    Time = reader.GetTimeSpan(6),
+                                    Shift = reader.GetInt32(7)
                                 };
                                 _Logs.Add(log);
                             }
@@ -120,6 +120,37 @@ namespace Dashboard.DataAccess.Concrete.Mysql
             }
             return log;
         }
+
+        public TimeSpan GetSpendTimes(string serverIp, string serverDb, string tableName, string ip, string day)
+        {
+            TimeSpan time = new TimeSpan(0, 0, 0);
+            string connString = string.Format("server={0};user=root;database={1};port=3306;password=root;Connection Timeout=1", serverIp, serverDb);
+            try
+            {
+                using (_conn = new MySqlConnection(connString))
+                {
+                    string query = string.Format("select Time from {0} where date = '{1}' and Ip='{2}'", tableName, day, ip);
+                    using (MySqlCommand cmd = new MySqlCommand(query, _conn))
+                    {
+                        _conn.Open();
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            reader.Read();
+                            if (!reader.IsDBNull(0))
+                            {
+                                time = reader.GetTimeSpan(0);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return time;
+        }
+
         public TimeSpan SpendTime(string ip, string db,string tableName, string date, string state)
         {
             TimeSpan timeSum = new TimeSpan(0, 0, 0);

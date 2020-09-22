@@ -35,6 +35,7 @@
             this.panelTop = new System.Windows.Forms.Panel();
             this.pbExit = new System.Windows.Forms.PictureBox();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.lblHeader = new System.Windows.Forms.Label();
             this.panelSide.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panelTop.SuspendLayout();
@@ -58,6 +59,8 @@
             this.btnMakineler.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnMakineler.FlatAppearance.BorderSize = 0;
             this.btnMakineler.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMakineler.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnMakineler.ForeColor = System.Drawing.Color.White;
             this.btnMakineler.Location = new System.Drawing.Point(0, 120);
             this.btnMakineler.Name = "btnMakineler";
             this.btnMakineler.Size = new System.Drawing.Size(125, 50);
@@ -71,6 +74,8 @@
             this.btnAnaSayfa.Dock = System.Windows.Forms.DockStyle.Top;
             this.btnAnaSayfa.FlatAppearance.BorderSize = 0;
             this.btnAnaSayfa.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAnaSayfa.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnAnaSayfa.ForeColor = System.Drawing.Color.White;
             this.btnAnaSayfa.Location = new System.Drawing.Point(0, 70);
             this.btnAnaSayfa.Name = "btnAnaSayfa";
             this.btnAnaSayfa.Size = new System.Drawing.Size(125, 50);
@@ -93,6 +98,7 @@
             // panelTop
             // 
             this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(162)))), ((int)(((byte)(229)))));
+            this.panelTop.Controls.Add(this.lblHeader);
             this.panelTop.Controls.Add(this.pbExit);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(125, 0);
@@ -120,6 +126,18 @@
             this.panelMain.Size = new System.Drawing.Size(875, 720);
             this.panelMain.TabIndex = 2;
             // 
+            // lblHeader
+            // 
+            this.lblHeader.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblHeader.AutoSize = true;
+            this.lblHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblHeader.ForeColor = System.Drawing.Color.White;
+            this.lblHeader.Location = new System.Drawing.Point(307, 2);
+            this.lblHeader.Name = "lblHeader";
+            this.lblHeader.Size = new System.Drawing.Size(155, 25);
+            this.lblHeader.TabIndex = 1;
+            this.lblHeader.Text = "Boyahane Takip";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -135,6 +153,7 @@
             this.panelSide.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panelTop.ResumeLayout(false);
+            this.panelTop.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbExit)).EndInit();
             this.ResumeLayout(false);
 
@@ -149,5 +168,6 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Button btnMakineler;
         private System.Windows.Forms.Button btnAnaSayfa;
+        private System.Windows.Forms.Label lblHeader;
     }
 }
