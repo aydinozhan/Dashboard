@@ -16,6 +16,17 @@ namespace Dashboard.Business.Concrete
         {
             _machineDal = machineDal;
         }
+
+        public void Add(Machine machine)
+        {
+            _machineDal.Add(machine);
+        }
+
+        public void Delete(int id)
+        {
+            _machineDal.Delete(id);
+        }
+
         public List<Machine> GetAll()
         {
             return _machineDal.GetAll();
@@ -24,6 +35,11 @@ namespace Dashboard.Business.Concrete
         public List<Machine> GetByCategoryId(int categoryId)
         {
             return _machineDal.GetByCategoryId(categoryId);
+        }
+
+        public void Update(Machine machine)
+        {
+            _machineDal.Update(machine);
         }
     }
 }

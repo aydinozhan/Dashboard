@@ -10,5 +10,8 @@ namespace Dashboard.DataAccess.Abtract
     public interface IMachineDal : IEntityRepository<Machine>
     {
         List<Machine> GetByCategoryId(int categoryId);
+        void Add(Machine machine);
+        void Delete(int id);
+        void Update(Machine machine);
     }
 }

@@ -11,5 +11,8 @@ namespace Dashboard.Business.Abtract
     {
         List<Machine> GetAll();
         List<Machine> GetByCategoryId(int categoryId);
+        void Add(Machine machine);
+        void Delete(int id);
+        void Update(Machine machine);
     }
 }

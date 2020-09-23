@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.panelMain = new System.Windows.Forms.Panel();
-            this.panelTop = new System.Windows.Forms.Panel();
             this.panelDgw = new System.Windows.Forms.Panel();
             this.dgvRapor = new System.Windows.Forms.DataGridView();
-            this.pbBackButton = new System.Windows.Forms.PictureBox();
+            this.panelTop = new System.Windows.Forms.Panel();
             this.lblHeader = new System.Windows.Forms.Label();
+            this.pbBackButton = new System.Windows.Forms.PictureBox();
             this.panelMain.SuspendLayout();
-            this.panelTop.SuspendLayout();
             this.panelDgw.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRapor)).BeginInit();
+            this.panelTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbBackButton)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,16 +50,6 @@
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(875, 720);
             this.panelMain.TabIndex = 0;
-            // 
-            // panelTop
-            // 
-            this.panelTop.Controls.Add(this.lblHeader);
-            this.panelTop.Controls.Add(this.pbBackButton);
-            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelTop.Location = new System.Drawing.Point(0, 0);
-            this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(875, 30);
-            this.panelTop.TabIndex = 0;
             // 
             // panelDgw
             // 
@@ -80,17 +70,15 @@
             this.dgvRapor.TabIndex = 0;
             this.dgvRapor.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvRapor_DataBindingComplete);
             // 
-            // pbBackButton
+            // panelTop
             // 
-            this.pbBackButton.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pbBackButton.Image = global::Dashboard.WinFormsUI.Properties.Resources.Resim1;
-            this.pbBackButton.Location = new System.Drawing.Point(0, 0);
-            this.pbBackButton.Name = "pbBackButton";
-            this.pbBackButton.Size = new System.Drawing.Size(50, 30);
-            this.pbBackButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbBackButton.TabIndex = 0;
-            this.pbBackButton.TabStop = false;
-            this.pbBackButton.Click += new System.EventHandler(this.pbBackButton_Click);
+            this.panelTop.Controls.Add(this.lblHeader);
+            this.panelTop.Controls.Add(this.pbBackButton);
+            this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTop.Location = new System.Drawing.Point(0, 0);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(875, 30);
+            this.panelTop.TabIndex = 0;
             // 
             // lblHeader
             // 
@@ -104,6 +92,18 @@
             this.lblHeader.Text = "Header";
             this.lblHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // pbBackButton
+            // 
+            this.pbBackButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pbBackButton.Image = global::Dashboard.WinFormsUI.Properties.Resources.Resim1;
+            this.pbBackButton.Location = new System.Drawing.Point(0, 0);
+            this.pbBackButton.Name = "pbBackButton";
+            this.pbBackButton.Size = new System.Drawing.Size(50, 30);
+            this.pbBackButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbBackButton.TabIndex = 0;
+            this.pbBackButton.TabStop = false;
+            this.pbBackButton.Click += new System.EventHandler(this.pbBackButton_Click);
+            // 
             // Rapor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -113,10 +113,10 @@
             this.Size = new System.Drawing.Size(875, 720);
             this.Load += new System.EventHandler(this.Rapor_Load);
             this.panelMain.ResumeLayout(false);
-            this.panelTop.ResumeLayout(false);
-            this.panelTop.PerformLayout();
             this.panelDgw.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRapor)).EndInit();
+            this.panelTop.ResumeLayout(false);
+            this.panelTop.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbBackButton)).EndInit();
             this.ResumeLayout(false);
 
