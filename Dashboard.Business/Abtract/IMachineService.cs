@@ -9,6 +9,9 @@ namespace Dashboard.Business.Abtract
 {
     public interface IMachineService
     {
+        /// <returns>
+        /// It returns all machine.
+        /// </returns>
         List<Machine> GetAll();
         List<Machine> GetByCategoryId(int categoryId);
         void Add(Machine machine);

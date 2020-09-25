@@ -82,12 +82,20 @@ namespace Dashboard.WinFormsUI.UserControls
             }
             dgvMachines.DataSource = _machineService.GetAll();
         }
-
         private void dgvMachines_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             tbIp.Text = dgvMachines.Rows[e.RowIndex].Cells[1].Value.ToString();
             tbMachineName.Text = dgvMachines.Rows[e.RowIndex].Cells[2].Value.ToString();
             tbCategory.Text = dgvMachines.Rows[e.RowIndex].Cells[3].Value.ToString();
+        }
+
+        private void dgvCategories_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string ctgId = dgvCategories.Rows[e.RowIndex].Cells[0].Value.ToString();
+            if (ctgId != _categoryService.GetIdByName("Hepsi").ToString())
+            {
+                tbCategory.Text = ctgId;
+            }    
         }
     }
 }

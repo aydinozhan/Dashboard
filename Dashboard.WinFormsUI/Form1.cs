@@ -21,13 +21,7 @@ namespace Dashboard.WinFormsUI
         public Form1()
         {
             InitializeComponent();
-            _categoryService = new CategoryManager(new MysqlCategoryDal());
-            _machineService = new MachineManager(new MysqlMachineDal());
-            _logService = new LogManager(new MysqlLogDal());
         }
-        private ICategoryService _categoryService;
-        private IMachineService _machineService;
-        private ILogService _logService;
         private void Form1_Load_1(object sender, EventArgs e)
         {
             Console.WriteLine("form1 load event fired");
@@ -40,7 +34,7 @@ namespace Dashboard.WinFormsUI
         }
         private void pbExit_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Çıkmak istediğinize emin misiniz?", "Onay", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Application.Exit();
             }

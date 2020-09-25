@@ -59,7 +59,6 @@ namespace Dashboard.DataAccess.Concrete.Mysql
                 Console.WriteLine("Silmede sıkıntı var\n" + e);
             }
         }
-
         public List<Machine> GetAll()
         {
             List<Machine> machines = new List<Machine>();

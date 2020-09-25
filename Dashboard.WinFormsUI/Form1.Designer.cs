@@ -33,9 +33,9 @@
             this.btnAnaSayfa = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panelTop = new System.Windows.Forms.Panel();
+            this.lblHeader = new System.Windows.Forms.Label();
             this.pbExit = new System.Windows.Forms.PictureBox();
             this.panelMain = new System.Windows.Forms.Panel();
-            this.lblHeader = new System.Windows.Forms.Label();
             this.panelSide.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panelTop.SuspendLayout();
@@ -106,6 +106,18 @@
             this.panelTop.Size = new System.Drawing.Size(875, 30);
             this.panelTop.TabIndex = 1;
             // 
+            // lblHeader
+            // 
+            this.lblHeader.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblHeader.AutoSize = true;
+            this.lblHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblHeader.ForeColor = System.Drawing.Color.White;
+            this.lblHeader.Location = new System.Drawing.Point(307, 2);
+            this.lblHeader.Name = "lblHeader";
+            this.lblHeader.Size = new System.Drawing.Size(155, 25);
+            this.lblHeader.TabIndex = 1;
+            this.lblHeader.Text = "Boyahane Takip";
+            // 
             // pbExit
             // 
             this.pbExit.Dock = System.Windows.Forms.DockStyle.Right;
@@ -125,18 +137,6 @@
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(875, 720);
             this.panelMain.TabIndex = 2;
-            // 
-            // lblHeader
-            // 
-            this.lblHeader.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblHeader.AutoSize = true;
-            this.lblHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblHeader.ForeColor = System.Drawing.Color.White;
-            this.lblHeader.Location = new System.Drawing.Point(307, 2);
-            this.lblHeader.Name = "lblHeader";
-            this.lblHeader.Size = new System.Drawing.Size(155, 25);
-            this.lblHeader.TabIndex = 1;
-            this.lblHeader.Text = "Boyahane Takip";
             // 
             // Form1
             // 

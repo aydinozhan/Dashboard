@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panelMain = new System.Windows.Forms.Panel();
             this.panelGbs = new System.Windows.Forms.FlowLayoutPanel();
             this.panelTop = new System.Windows.Forms.Panel();
             this.cbCategories = new System.Windows.Forms.ComboBox();
             this.dtp = new System.Windows.Forms.DateTimePicker();
+            this.timerDbCheck = new System.Windows.Forms.Timer(this.components);
             this.panelMain.SuspendLayout();
             this.panelTop.SuspendLayout();
             this.SuspendLayout();
@@ -84,6 +86,10 @@
             this.dtp.TabIndex = 0;
             this.dtp.ValueChanged += new System.EventHandler(this.dtp_ValueChanged);
             // 
+            // timerDbCheck
+            // 
+            this.timerDbCheck.Tick += new System.EventHandler(this.timerDbCheck_Tick);
+            // 
             // AnaSayfa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -92,6 +98,7 @@
             this.Name = "AnaSayfa";
             this.Size = new System.Drawing.Size(875, 720);
             this.Load += new System.EventHandler(this.AnaSayfa_Load);
+            this.VisibleChanged += new System.EventHandler(this.AnaSayfa_VisibleChanged);
             this.panelMain.ResumeLayout(false);
             this.panelTop.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -105,5 +112,6 @@
         private System.Windows.Forms.ComboBox cbCategories;
         private System.Windows.Forms.DateTimePicker dtp;
         private System.Windows.Forms.FlowLayoutPanel panelGbs;
+        private System.Windows.Forms.Timer timerDbCheck;
     }
 }

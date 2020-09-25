@@ -173,12 +173,13 @@ namespace Dashboard.DataAccess.Concrete.Mysql
                         }
                     }
                 }
+                return timeSum;
             }
             catch (Exception e)
             {
                 Console.WriteLine("SpendTime sıkıntısı \n"+e);
+                return new TimeSpan(1, 1, 1);
             }
-            return timeSum;
         }
     }
 }
