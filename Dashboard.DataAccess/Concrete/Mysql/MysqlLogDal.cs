@@ -107,9 +107,11 @@ namespace Dashboard.DataAccess.Concrete.Mysql
                         _conn.Open();
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            reader.Read();
-                            log.LastState = reader.GetString(0);
-                            log.LastDate = reader.GetDateTime(1);
+                            while (reader.Read())
+                            {
+                                log.LastState = reader.GetString(0);
+                                log.LastDate = reader.GetDateTime(1);
+                            }
                         }
                     }
                 }
@@ -135,10 +137,12 @@ namespace Dashboard.DataAccess.Concrete.Mysql
                         _conn.Open();
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            reader.Read();
-                            if (!reader.IsDBNull(0))
+                            while (reader.Read())
                             {
-                                time = reader.GetTimeSpan(0);
+                                if (!reader.IsDBNull(0))
+                                {
+                                    time = reader.GetTimeSpan(0);
+                                }
                             }
                         }
                     }
@@ -146,7 +150,7 @@ namespace Dashboard.DataAccess.Concrete.Mysql
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine("Get SpendTimes hata var\n"+e);
             }
             return time;
         }
@@ -165,10 +169,11 @@ namespace Dashboard.DataAccess.Concrete.Mysql
                         _conn.Open();
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            reader.Read();
-                            if (!reader.IsDBNull(0))
-                            {
-                                timeSum = reader.GetTimeSpan(0);
+                            while (reader.Read()){
+                                if (!reader.IsDBNull(0))
+                                {
+                                    timeSum = reader.GetTimeSpan(0);
+                                }
                             }
                         }
                     }

@@ -12,6 +12,7 @@ using Dashboard.Business.Concrete;
 using Dashboard.DataAccess.Concrete.Mysql;
 using Dashboard.Business.Abtract;
 using Dashboard.Entities.Concrete;
+using NodaTime;
 
 namespace Dashboard.WinFormsUI.UserControls
 {
@@ -173,9 +174,10 @@ namespace Dashboard.WinFormsUI.UserControls
                 lastLog = _logService.GetLast(machines[i].Ip,"Machine","Logs");
                 string lastState =lastLog.LastState;
                 lastState = (lastState=="open") ? "'dir açık" : "'dir kapalı";
-                DateTime lastTime = lastLog.LastDate;
-                TimeSpan gecenSure = DateTime.Now - lastTime;
-                string calismaSuresi = gecenSure.ToString("h'h 'm'm 's's'")+"\t"+lastState;
+                var lastTime = lastLog.LastDate;
+                var gecenSure = DateTime.Now - lastTime;
+                
+                string calismaSuresi = string.Format("{0:%d}g {0:%h}s {0:%m}dk {0:%s}sn", gecenSure)+"\t"+lastState;
                 if (acik!="01:01:01")
                 {
                     _lblListAcik[i].Text = acik;
