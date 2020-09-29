@@ -53,6 +53,7 @@ namespace Dashboard.WinFormsUI.UserControls
             dtp.Format = DateTimePickerFormat.Custom;
             CreateGb(GetAllMachines());
             FillGb(GetAllMachines());
+            _ctgId = _categoryService.GetIdByName("Hepsi");
             timerDbCheck.Interval = 1000;
             timerDbCheck.Enabled = true;
             timerDbCheck.Start();
@@ -63,6 +64,7 @@ namespace Dashboard.WinFormsUI.UserControls
         }
         public void CreateGb(List<Machine> machines)
         {
+            Console.WriteLine("CreateGb()");
             a = 0;
             _gbs.Clear();
             _gbName.Clear();

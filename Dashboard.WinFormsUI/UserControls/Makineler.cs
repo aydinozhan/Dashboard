@@ -33,18 +33,26 @@ namespace Dashboard.WinFormsUI.UserControls
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            Machine machine = new Machine
+            bool isEmpty = (string.IsNullOrWhiteSpace(tbIp.Text) || string.IsNullOrWhiteSpace(tbMachineName.Text) || string.IsNullOrWhiteSpace(tbCategory.Text)) ;
+            if (!isEmpty)
             {
-                Ip = tbIp.Text.ToString(),
-                MachineName = tbMachineName.Text.ToString(),
-                CategoryId = Int16.Parse(tbCategory.Text.ToString())
-            };
-            _machineService.Add(machine);
-            MessageBox.Show("Kayıt Eklendi");
-            tbIp.Text = "";
-            tbMachineName.Text = "";
-            tbCategory.Text = "";
-            dgvMachines.DataSource = _machineService.GetAll();
+                Machine machine = new Machine
+                {
+                    Ip = tbIp.Text.ToString(),
+                    MachineName = tbMachineName.Text.ToString(),
+                    CategoryId = Int16.Parse(tbCategory.Text.ToString())
+                };
+                _machineService.Add(machine);
+                MessageBox.Show("Kayıt Eklendi");
+                tbIp.Text = "";
+                tbMachineName.Text = "";
+                tbCategory.Text = "";
+                dgvMachines.DataSource = _machineService.GetAll();
+            }
+            else
+            {
+                MessageBox.Show("Eksik yerleri doldurunuz ! ");
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
