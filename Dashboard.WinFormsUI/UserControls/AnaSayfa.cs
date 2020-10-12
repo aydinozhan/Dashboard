@@ -31,6 +31,8 @@ namespace Dashboard.WinFormsUI.UserControls
         private ILogService _logService;
         private string _serverIp="172.16.0.221";
         private string _serverDb = "Backup";
+        private string _raspiDb = "Machine";
+        private string _raspiTable = "Logs";
         private int _ctgId = 0;
 
         public AnaSayfa()
@@ -76,7 +78,7 @@ namespace Dashboard.WinFormsUI.UserControls
             {
                 GroupBox gb = new GroupBox();
                 gb.Name = machines[i].MachineName;
-                gb.Size = new Size(200, 200);
+                gb.Size = new Size(200, 250);
                 gb.Text = machines[i].MachineName + " " + machines[i].Ip;
                 gb.Font = new Font("Segoe UI", 12);
                 gb.FlatStyle = FlatStyle.Popup;
@@ -95,7 +97,7 @@ namespace Dashboard.WinFormsUI.UserControls
                 lblopen.Text = "Açık";
                 lblopen.Size = new Size(50, 17);
                 lblopen.Font = new Font("Arial", 10);
-                lblopen.Location = new Point(10, 60);
+                lblopen.Location = new Point(10, 55);
                 gb.Controls.Add(lblopen);
 
                 Label lblAcik = new Label();
@@ -103,7 +105,7 @@ namespace Dashboard.WinFormsUI.UserControls
                 lblAcik.Text = "Açık geçen zaman";
                 lblAcik.Size = new Size(120, 17);
                 lblAcik.Font = new Font("Arial", 10);
-                lblAcik.Location = new Point(80, 60);
+                lblAcik.Location = new Point(80, 55);
                 gb.Controls.Add(lblAcik);
                 _lblListAcik.Add(lblAcik);
 
@@ -112,7 +114,7 @@ namespace Dashboard.WinFormsUI.UserControls
                 lblclose.Text = "Kapalı";
                 lblclose.Size = new Size(50, 17);
                 lblclose.Font = new Font("Arial", 10);
-                lblclose.Location = new Point(10, 80);
+                lblclose.Location = new Point(10, 75);
                 gb.Controls.Add(lblclose);
 
                 Label lblKapali = new Label();
@@ -120,7 +122,7 @@ namespace Dashboard.WinFormsUI.UserControls
                 lblKapali.Text = "Kapalı";
                 lblKapali.Size = new Size(120, 17);
                 lblKapali.Font = new Font("Arial", 10);
-                lblKapali.Location = new Point(80, 80);
+                lblKapali.Location = new Point(80, 75);
                 gb.Controls.Add(lblKapali);
                 _lblListKapali.Add(lblKapali);
 
@@ -129,15 +131,20 @@ namespace Dashboard.WinFormsUI.UserControls
                 lblCalismaSuresi.Text = "çalışma süresi";
                 lblCalismaSuresi.Size = new Size(150, 50);
                 lblCalismaSuresi.Font = new Font("Arial", 10);
-                lblCalismaSuresi.Location = new Point(10, 110);
+                lblCalismaSuresi.Location = new Point(10,100);
                 gb.Controls.Add(lblCalismaSuresi);
                 _lblListCalismaSuresi.Add(lblCalismaSuresi);
+
+                TextBox tbIsEmriNo = new TextBox();
+                tbIsEmriNo.Size = new Size(180,20);
+                tbIsEmriNo.Location = new Point(10,155);
+                gb.Controls.Add(tbIsEmriNo);
 
                 Button btn1 = new Button();
                 btn1.Name = i.ToString();
                 btn1.Text = "Detay";
                 btn1.Size = new Size(70, 30);
-                btn1.Location = new Point(65, 165);
+                btn1.Location = new Point(65, 215);
                 btn1.FlatStyle = FlatStyle.Flat;
                 btn1.FlatAppearance.BorderSize = 0;
                 btn1.BackColor = (i % 2 == 0) ? Color.FromArgb(118, 115, 179) : Color.FromArgb(98, 150, 204);
@@ -219,15 +226,24 @@ namespace Dashboard.WinFormsUI.UserControls
             {
                 if (DateTime.Today.ToString("yyy-MM-dd") == theDate)
                 {
-                    //timer1.Enabled = true;
-                    _lblListAcik[i].Text = "acik : " + _logService.SpendTime(machines[i].Ip, "Machine", "Logs",theDate, "open").ToString();
-                    _lblListKapali[i].Text = "kapali : " + _logService.SpendTime(machines[i].Ip, "Machine", "Logs", theDate, "close").ToString();
+                    timerDbCheck.Enabled = true;
+                    timerDbCheck.Start();
+
+                    string acik = _logService.SpendTime(machines[i].Ip, _raspiDb, _raspiTable, theDate, "open").ToString();
+                    string kapali = _logService.SpendTime(machines[i].Ip, _raspiDb, _raspiTable, theDate, "close").ToString();
+                    _lblListAcik[i].Text = acik;
+                    _lblListKapali[i].Text = kapali;
                 }
                 else
                 {
-                    //timer1.Enabled = false;
-                    _lblListAcik[i].Text = "acik : " + _logService.SpendTime(_serverIp,_serverDb,machines[i].MachineName,theDate,"open").ToString();
-                    _lblListKapali[i].Text = "kapali : " + _logService.SpendTime(_serverIp, _serverDb, machines[i].MachineName, theDate, "close").ToString();
+                    
+                    timerDbCheck.Enabled = false;
+                    timerDbCheck.Stop();
+
+                    string acik = _logService.SpendTime(_serverIp, _serverDb,machines[i].MachineName, theDate, "open").ToString();
+                    string kapali = _logService.SpendTime(machines[i].Ip, "Machine", "Logs", theDate, "close").ToString();
+                    _lblListAcik[i].Text = acik;
+                    _lblListKapali[i].Text = kapali;
                     _lblListCalismaSuresi[i].Text = "";
                 }
             }
@@ -240,6 +256,7 @@ namespace Dashboard.WinFormsUI.UserControls
             machines = GetMachines();
             CreateGb(machines);
             FillGb(machines);
+            _ctgId = GetCurrentCtgId();
         }
         private List<Machine> GetMachines()
         {

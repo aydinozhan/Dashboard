@@ -13,5 +13,6 @@ namespace Dashboard.Business.Abtract
         TimeSpan SpendTime(string ip, string db, string tableName, string day, string state);
         Log GetLast(string ip, string db, string tableName);
         TimeSpan GetSpendTimes(string serverIp, string serverDb, string tableName, string ip, string day);
+        TimeSpan GetHoursByHours(string ip, string db, string tableName, string state, string day, string hour);
     }
 }

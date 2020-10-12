@@ -93,6 +93,41 @@ namespace Dashboard.DataAccess.Concrete.Mysql
             }
             return _Logs;
         }
+
+        public TimeSpan GetHoursByHours(string ip, string db, string tableName,string state, string day, string hour)
+        {
+            TimeSpan timeSum = new TimeSpan(0, 0, 0);
+            string connString = string.Format("server={0};user=root;database={1};port=3306;password=root;Connection Timeout=1", ip, db);
+            try
+            {
+                using (_conn = new MySqlConnection(connString))
+                {
+                    string query = string.Format("select SEC_TO_TIME(SUM(TIME_TO_SEC(time))) as timeSum from {0} where LastState='{1}' and (date between '{2} {3}:00:00' and '{4} {5}:59:59')", tableName, state, day, hour,day,hour);
+                    using (MySqlCommand cmd = new MySqlCommand(query, _conn))
+                    {
+                        _conn.Open();
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if (!reader.IsDBNull(0))
+                                {
+                                    timeSum = reader.GetTimeSpan(0);
+                                }
+                            }
+                        }
+                    }
+                }
+                return timeSum;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("hours by hourse  sıkıntısı \n" + e);
+                return new TimeSpan(0, 0, 0);
+            }
+
+        }
+
         public Log GetLast(string ip, string db, string tableName)
         {
             Log log = new Log();
@@ -185,6 +220,40 @@ namespace Dashboard.DataAccess.Concrete.Mysql
                 Console.WriteLine("SpendTime sıkıntısı \n"+e);
                 return new TimeSpan(1, 1, 1);
             }
+        }
+
+        public TimeSpan GetHoursByHoursV2(string ip, string db, string tableName, string state, string day, string hour)
+        {
+            TimeSpan timeSum = new TimeSpan(0, 0, 0);
+            string connString = string.Format("server={0};user=root;database={1};port=3306;password=root;Connection Timeout=1", ip, db);
+            try
+            {
+                using (_conn = new MySqlConnection(connString))
+                {
+                    string query = string.Format("select SEC_TO_TIME(SUM(TIME_TO_SEC(time))) as timeSum from {0} where LastState='{1}' and (date between '{2} {3}:00:00' and '{4} {5}:59:59')", tableName, state, day, hour, day, hour);
+                    using (MySqlCommand cmd = new MySqlCommand(query, _conn))
+                    {
+                        _conn.Open();
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if (!reader.IsDBNull(0))
+                                {
+                                    timeSum = reader.GetTimeSpan(0);
+                                }
+                            }
+                        }
+                    }
+                }
+                return timeSum;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("hours by hourse  sıkıntısı \n" + e);
+                return new TimeSpan(0, 0, 0);
+            }
+
         }
     }
 }

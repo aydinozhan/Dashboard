@@ -30,6 +30,7 @@ namespace Dashboard.WinFormsUI.UserControls
             _logService = new LogManager(new MysqlLogDal());
             barMonth.ChartAreas["ChartArea1"].AxisX.Interval = 1;
             barWeek.ChartAreas["ChartArea1"].AxisX.Interval = 1;
+            barDay.ChartAreas["ChartArea1"].AxisX.Interval = 1;
         }
 
         private void Detay_Load(object sender, EventArgs e)
@@ -65,6 +66,35 @@ namespace Dashboard.WinFormsUI.UserControls
             }
             double totalOpenTimeByWeek = acikZaman.TotalHours;
             double totalCloseTimeByWeek = kapaliZaman.TotalHours;
+
+            acikZaman = new TimeSpan(0, 0, 0);
+            kapaliZaman = new TimeSpan(0, 0, 0);
+
+
+            for (int i = 0; i < 24; i++)
+            {
+                var date = DateTime.Now;
+                var sonSaat = date.Hour;
+                string hour= "";
+                if (i/10 == 0)
+                {
+                    hour = "0" + i.ToString();
+                }
+                else
+                {
+                    hour = i.ToString();
+                }
+                if (hour == sonSaat.ToString())
+                    break;
+                string currentDay = DateTime.Now.ToString("yyyy-MM-dd");
+                TimeSpan acik = _logService.GetHoursByHours(Machine.Ip, "Machine", "Logs", "open", currentDay, hour);
+                TimeSpan kapali = _logService.GetHoursByHours(Machine.Ip, "Machine", "Logs", "close", currentDay, hour);
+                acikZaman = acikZaman + acik;
+                kapaliZaman = kapaliZaman + kapali;
+                barDay.Series["Series1"].Points.AddXY(hour, acik.TotalMinutes);
+            }
+            double totalOpenTimeByDay = acikZaman.TotalHours;
+            double totalCloseTimeByDay = kapaliZaman.TotalHours;
 
             acikZaman = new TimeSpan(0, 0, 0);
             kapaliZaman = new TimeSpan(0, 0, 0);
@@ -151,6 +181,24 @@ namespace Dashboard.WinFormsUI.UserControls
             string endDay = eDay.ToString("yyy-MM-dd");
             DateTime sDay = eDay.AddMonths(-1);
             string startDay = sDay.ToString("yyyy-MM-dd");
+            Rapor rapor = new Rapor
+            {
+                Machine = Machine,
+                StartDay = startDay,
+                EndDay = endDay
+            };
+            panelMain.Controls.Clear();
+            panelMain.Controls.Add(rapor);
+            rapor.Show();
+            rapor.Dock = DockStyle.Fill;
+            rapor.BringToFront();
+        }
+
+        private void barDay_Click(object sender, EventArgs e)
+        {
+            DateTime dt = DateTime.Now;
+            string endDay = dt.ToString("yyy-MM-dd");
+            string startDay = dt.ToString("yyyy-MM-dd");
             Rapor rapor = new Rapor
             {
                 Machine = Machine,

@@ -21,6 +21,11 @@ namespace Dashboard.Business.Concrete
             return _logDal.GetByDate(ip, db, table,firstDate,lastDate);
         }
 
+        public TimeSpan GetHoursByHours(string ip, string db, string tableName,string state, string day, string hour)
+        {
+            return _logDal.GetHoursByHours(ip,db,tableName,state,day,hour);
+        }
+
         public Log GetLast(string ip, string db, string tableName)
         {
             return _logDal.GetLast(ip,db,tableName);
