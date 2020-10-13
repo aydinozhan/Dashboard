@@ -93,9 +93,11 @@
     <Compile Include="Abtract\IEntityRepository.cs" />
     <Compile Include="Abtract\ILogDal.cs" />
     <Compile Include="Abtract\IMachineDal.cs" />
+    <Compile Include="Abtract\IWorkOrderStateDal.cs" />
     <Compile Include="Concrete\Mysql\MysqlCategoryDal.cs" />
     <Compile Include="Concrete\Mysql\MysqlLogDal.cs" />
     <Compile Include="Concrete\Mysql\MysqlMachineDal.cs" />
+    <Compile Include="Concrete\Mysql\MysqlWorkOrderStateDal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

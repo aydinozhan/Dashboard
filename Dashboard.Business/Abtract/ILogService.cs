@@ -1,4 +1,5 @@
-﻿using Dashboard.Entities.Concrete;
+﻿using Dashboard.DataAccess.Concrete;
+using Dashboard.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace Dashboard.Business.Abtract
         Log GetLast(string ip, string db, string tableName);
         TimeSpan GetSpendTimes(string serverIp, string serverDb, string tableName, string ip, string day);
         TimeSpan GetHoursByHours(string ip, string db, string tableName, string state, string day, string hour);
+        Log GetLastLog(string ip, string db, string tableName);
+        void Add(Log log,Machine machine);
     }
 }

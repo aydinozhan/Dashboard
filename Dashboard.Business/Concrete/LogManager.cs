@@ -1,5 +1,6 @@
 ﻿using Dashboard.Business.Abtract;
 using Dashboard.DataAccess.Abtract;
+using Dashboard.DataAccess.Concrete;
 using Dashboard.Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,12 @@ namespace Dashboard.Business.Concrete
         {
             _logDal = logDal;
         }
+
+        public void Add(Log log,Machine machine)
+        {
+            _logDal.Add(log,machine);
+        }
+
         public List<Log> GetByDate(string ip, string db, string table, string firstDate, string lastDate)
         {
             return _logDal.GetByDate(ip, db, table,firstDate,lastDate);
@@ -29,6 +36,11 @@ namespace Dashboard.Business.Concrete
         public Log GetLast(string ip, string db, string tableName)
         {
             return _logDal.GetLast(ip,db,tableName);
+        }
+
+        public Log GetLastLog(string ip, string db, string tableName)
+        {
+            return _logDal.GetLastLog(ip,db,tableName);
         }
 
         public TimeSpan GetSpendTimes(string serverIp, string serverDb, string tableName, string ip, string day)

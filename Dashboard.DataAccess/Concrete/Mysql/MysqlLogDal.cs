@@ -14,6 +14,7 @@ namespace Dashboard.DataAccess.Concrete.Mysql
     {
         string _serverIp = "172.16.0.221";
         string _serverBackupDb = "Backup";
+        private string _raspiDb="Machine";
         MySqlConnection _conn;
         List<Log> _Logs = new List<Log>();
         public List<Log> GetAll()
@@ -254,6 +255,69 @@ namespace Dashboard.DataAccess.Concrete.Mysql
                 return new TimeSpan(0, 0, 0);
             }
 
+        }
+
+        public Log GetLastLog(string ip, string db, string tableName)
+        {
+            Log log = new Log();
+            string connString = string.Format("server={0};user=root;database={1};port=3306;password=root;Connection Timeout=1", ip, db);
+            try
+            {
+                using (_conn = new MySqlConnection(connString))
+                {
+                    string query = string.Format("select * from {0} order by Id desc limit 1", tableName);
+                    using (MySqlCommand cmd = new MySqlCommand(query, _conn))
+                    {
+                        _conn.Open();
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                log.Id = reader.GetInt32(0);
+                                log.Name = reader.GetString(1);
+                                log.LastState = reader.GetString(2);
+                                log.LastDate = reader.GetDateTime(3);
+                                log.State = reader.GetString(4);
+                                log.Date = reader.GetDateTime(5);
+                                log.Time = reader.GetTimeSpan(6);
+                                log.Shift = reader.GetInt32(7);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("getLastLog'da sıkıntı var" + e);
+            }
+            return log;
+        }
+
+        public void Add(Log log,Machine machine)
+        {
+            string connString = string.Format("server={0};user=root;database={1};port=3306;password=root;Connection Timeout=1;Allow User Variables=True",machine.Ip,_raspiDb);
+            try
+            {
+                using (_conn = new MySqlConnection(connString))
+                {
+                    string query = "insert into Logs (Name,LastState,LastDate,State,Time,Shift) values (@Name,@LastState,@LastDate,@State,@Time,@Shift)";
+                    using (MySqlCommand cmd = new MySqlCommand(query, _conn))
+                    {
+                        _conn.Open();
+                        cmd.Parameters.AddWithValue("@Name",machine.MachineName);
+                        cmd.Parameters.AddWithValue("@LastState", log.LastState);
+                        cmd.Parameters.AddWithValue("@LastDate", log.LastDate);
+                        cmd.Parameters.AddWithValue("@State",log.State);
+                        cmd.Parameters.AddWithValue("@Time",log.Time);
+                        cmd.Parameters.AddWithValue("@Shift",log.Shift);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("add machine'de sıkıntı var" + e);
+            }
         }
     }
 }

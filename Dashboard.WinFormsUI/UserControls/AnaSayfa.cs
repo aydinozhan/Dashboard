@@ -25,10 +25,12 @@ namespace Dashboard.WinFormsUI.UserControls
         public List<Label> _lblListAcik = new List<Label>();
         public List<Label> _lblListKapali = new List<Label>();
         public List<Label> _lblListCalismaSuresi = new List<Label>();
+        public List<TextBox> _tbWorkOrderNo = new List<TextBox>();
         public List<string> _gbName = new List<string>();
         private IMachineService _machineService;
         private ICategoryService _categoryService;
         private ILogService _logService;
+        private IWorkOrderStateService _workOrderStateService;
         private string _serverIp="172.16.0.221";
         private string _serverDb = "Backup";
         private string _raspiDb = "Machine";
@@ -41,6 +43,7 @@ namespace Dashboard.WinFormsUI.UserControls
             _machineService = new MachineManager(new MysqlMachineDal());
             _categoryService = new CategoryManager(new MysqlCategoryDal());
             _logService = new LogManager(new MysqlLogDal());
+            _workOrderStateService = new WorkOrderStateManager(new MysqlWorkOrderStateDal());
         }
 
         private void AnaSayfa_Load(object sender, EventArgs e)
@@ -74,6 +77,7 @@ namespace Dashboard.WinFormsUI.UserControls
             _lblListAcik.Clear();
             _lblListKapali.Clear();
             _lblListCalismaSuresi.Clear();
+            _tbWorkOrderNo.Clear();
             for (int i = 0; i < machines.Count; i++)
             {
                 GroupBox gb = new GroupBox();
@@ -135,10 +139,12 @@ namespace Dashboard.WinFormsUI.UserControls
                 gb.Controls.Add(lblCalismaSuresi);
                 _lblListCalismaSuresi.Add(lblCalismaSuresi);
 
-                TextBox tbIsEmriNo = new TextBox();
-                tbIsEmriNo.Size = new Size(180,20);
-                tbIsEmriNo.Location = new Point(10,155);
-                gb.Controls.Add(tbIsEmriNo);
+                TextBox tbWorkOrderNo = new TextBox();
+                lblCalismaSuresi.Name = i.ToString();
+                tbWorkOrderNo.Size = new Size(180,20);
+                tbWorkOrderNo.Location = new Point(10,155);
+                _tbWorkOrderNo.Add(tbWorkOrderNo);
+                gb.Controls.Add(tbWorkOrderNo);
 
                 Button btn1 = new Button();
                 btn1.Name = i.ToString();
@@ -154,7 +160,7 @@ namespace Dashboard.WinFormsUI.UserControls
                 Button btnBasla = new Button();
                 btnBasla.Name = i.ToString();
                 btnBasla.Text = "Başlat";
-                btnBasla.Size = new Size(70, 25);
+                btnBasla.Size = new Size(70, 30);
                 btnBasla.Location = new Point(20, 180);
                 btnBasla.FlatStyle = FlatStyle.Flat;
                 btnBasla.FlatAppearance.BorderSize = 0;
@@ -179,12 +185,67 @@ namespace Dashboard.WinFormsUI.UserControls
 
         private void btnBitir_click(object sender, EventArgs e)
         {
-           
+            Button btn = sender as Button;
+            int index = Convert.ToInt32(btn.Name.ToString());
+            List<Machine> machines = new List<Machine>();
+            machines = GetMachines();
+            Machine machine = machines[index];
+
+            Log lastLog = _logService.GetLastLog(machine.Ip, _raspiDb, "Logs");
+            TimeSpan time = DateTime.Now.Subtract(lastLog.Date);
+            Log log = new Log
+            {
+                Name = lastLog.Name,
+                LastState = lastLog.State,
+                LastDate = lastLog.Date,
+                State = lastLog.State,
+                Time = time,
+                Shift = lastLog.Shift
+            };
+            _logService.Add(log, machine);
+            int id = lastLog.Id + 1;
+            string workOrderNo = _tbWorkOrderNo[index].Text;
+            WorkOrderState workOrderState = new WorkOrderState
+            {
+                Id = id,
+                WorkOrderNo = workOrderNo,
+                State = "finish"
+            };
+            _workOrderStateService.Add(workOrderState, machine);
+
+
         }
 
         private void btnBasla_click(object sender, EventArgs e)
         {
-            
+            Button btn = sender as Button;
+            int index = Convert.ToInt32(btn.Name.ToString());
+            List<Machine> machines = new List<Machine>();
+            machines = GetMachines();
+            Machine machine = machines[index];
+
+            Log lastLog  = _logService.GetLastLog(machine.Ip,_raspiDb,"Logs");
+            TimeSpan time = DateTime.Now.Subtract(lastLog.Date);
+            Log log = new Log
+            {
+                Name=lastLog.Name,
+                LastState=lastLog.State,
+                LastDate=lastLog.Date,
+                State=lastLog.State,
+                Time=time,
+                Shift=lastLog.Shift
+            };
+            _logService.Add(log,machine);
+            int id = lastLog.Id + 1;
+            string workOrderNo = _tbWorkOrderNo[index].Text;
+            WorkOrderState workOrderState = new WorkOrderState
+            {
+                Id=id,
+                WorkOrderNo = workOrderNo,
+                State = "start"
+            };
+            _workOrderStateService.Add(workOrderState,machine);
+
         }
 
         private void btn_click(object sender, EventArgs e)
