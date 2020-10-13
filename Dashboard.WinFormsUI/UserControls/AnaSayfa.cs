@@ -150,9 +150,43 @@ namespace Dashboard.WinFormsUI.UserControls
                 btn1.BackColor = (i % 2 == 0) ? Color.FromArgb(118, 115, 179) : Color.FromArgb(98, 150, 204);
                 btn1.Click += new EventHandler(this.btn_click);
                 gb.Controls.Add(btn1);
-                a = a + 1;
+
+                Button btnBasla = new Button();
+                btnBasla.Name = i.ToString();
+                btnBasla.Text = "Başlat";
+                btnBasla.Size = new Size(70, 25);
+                btnBasla.Location = new Point(20, 180);
+                btnBasla.FlatStyle = FlatStyle.Flat;
+                btnBasla.FlatAppearance.BorderSize = 0;
+                btnBasla.BackColor = Color.FromArgb(102, 187, 106);
+                btnBasla.Click += new EventHandler(this.btnBasla_click);
+                gb.Controls.Add(btnBasla);
+
+                Button btnBitir = new Button();
+                btnBitir.Name = i.ToString();
+                btnBitir.Text = "Bitir";
+                btnBitir.Size = new Size(70, 30);
+                btnBitir.Location = new Point(110, 180);
+                btnBitir.FlatStyle = FlatStyle.Flat;
+                btnBitir.FlatAppearance.BorderSize = 0;
+                btnBitir.BackColor =  Color.FromArgb(229, 57, 53);
+                btnBitir.Click += new EventHandler(this.btnBitir_click);
+                gb.Controls.Add(btnBitir);
+
+                a += 1;
             }
         }
+
+        private void btnBitir_click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void btnBasla_click(object sender, EventArgs e)
+        {
+            
+        }
+
         private void btn_click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
