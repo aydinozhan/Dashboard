@@ -52,7 +52,7 @@ namespace Dashboard.DataAccess.Concrete.Mysql
             }
             catch (Exception e)
             {
-                Console.WriteLine("getAllByDate'de sıkıntı var");
+                Console.WriteLine(" log getAll'de sıkıntı var\n"+e);
             }
             return _Logs;
         }
@@ -90,7 +90,7 @@ namespace Dashboard.DataAccess.Concrete.Mysql
             }
             catch (Exception e)
             {
-                Console.WriteLine("getByDate'de sıkıntı var");
+                Console.WriteLine("log getByDate'de sıkıntı var");
             }
             return _Logs;
         }
@@ -154,7 +154,7 @@ namespace Dashboard.DataAccess.Concrete.Mysql
             }
             catch (Exception e)
             {
-                Console.WriteLine("getLast'da sıkıntı var"+ e);
+                Console.WriteLine("log getLast'da sıkıntı var"+ e);
             }
             return log;
         }
@@ -186,7 +186,7 @@ namespace Dashboard.DataAccess.Concrete.Mysql
             }
             catch (Exception e)
             {
-                Console.WriteLine("Get SpendTimes hata var\n"+e);
+                Console.WriteLine("log Get SpendTimes hata var\n"+e);
             }
             return time;
         }
@@ -218,7 +218,7 @@ namespace Dashboard.DataAccess.Concrete.Mysql
             }
             catch (Exception e)
             {
-                Console.WriteLine("SpendTime sıkıntısı \n"+e);
+                Console.WriteLine("log SpendTime sıkıntısı \n"+e);
                 return new TimeSpan(1, 1, 1);
             }
         }
@@ -251,7 +251,7 @@ namespace Dashboard.DataAccess.Concrete.Mysql
             }
             catch (Exception e)
             {
-                Console.WriteLine("hours by hourse  sıkıntısı \n" + e);
+                Console.WriteLine("log hours by hourse  sıkıntısı \n" + e);
                 return new TimeSpan(0, 0, 0);
             }
 
@@ -288,7 +288,7 @@ namespace Dashboard.DataAccess.Concrete.Mysql
             }
             catch (Exception e)
             {
-                Console.WriteLine("getLastLog'da sıkıntı var" + e);
+                Console.WriteLine("log getLastLog'da sıkıntı var" + e);
             }
             return log;
         }
@@ -318,6 +318,54 @@ namespace Dashboard.DataAccess.Concrete.Mysql
             {
                 Console.WriteLine("add machine'de sıkıntı var" + e);
             }
+        }
+
+        public List<Log> GetById(string ip, string db, string table, int startId, int finishId)
+        {
+            List<Log> logs = new List<Log>();
+            string connString = string.Format("server={0};user=root;database={1};port=3306;password=root;Connection Timeout=1", ip, db);
+            try
+            {
+                using (_conn = new MySqlConnection(connString))
+                {
+                    string query = "";
+                    if(finishId==0)
+                    {
+                        query = string.Format("select * from {0} where  Id > {1} order by Id desc", table,startId);
+                    }
+                    else
+                    {
+                        query = string.Format("select * from {0} where Id > {1} and Id <= {2} order by Id desc", table, finishId, startId);
+                    }
+                    using (MySqlCommand cmd = new MySqlCommand(query, _conn))
+                    {
+                        _conn.Open();
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Log log = new Log
+                                {
+                                    Id = reader.GetInt32(0),
+                                    Name = reader.GetString(1),
+                                    LastState = reader.GetString(2),
+                                    LastDate = reader.GetDateTime(3),
+                                    State = reader.GetString(4),
+                                    Date = reader.GetDateTime(5),
+                                    Time = reader.GetTimeSpan(6),
+                                    Shift = reader.GetInt32(7)
+                                };
+                                logs.Add(log);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("log getByDate'de sıkıntı var");
+            }
+            return logs;
         }
     }
 }

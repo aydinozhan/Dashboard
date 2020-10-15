@@ -22,5 +22,20 @@ namespace Dashboard.Business.Concrete
         {
             _workOrderStateDal.Add(workOrderState,machine);
         }
+
+        public List<WorkOrderState> GetAllByMachine(Machine machine)
+        {
+            return _workOrderStateDal.GetAllByMachine(machine);
+        }
+
+        public bool IsWorkOrderFinish(Machine machine, string workOrderNo)
+        {
+            return _workOrderStateDal.IsWorkOrderFinish(machine,workOrderNo);
+        }
+
+        public List<WorkOrderState> GetByWorkOrderNo(Machine machine, string workOderNo)
+        {
+            return _workOrderStateDal.GetByWorkOrderNo(machine,workOderNo);
+        }
     }
 }

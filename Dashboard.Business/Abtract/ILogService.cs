@@ -17,5 +17,7 @@ namespace Dashboard.Business.Abtract
         TimeSpan GetHoursByHours(string ip, string db, string tableName, string state, string day, string hour);
         Log GetLastLog(string ip, string db, string tableName);
         void Add(Log log,Machine machine);
+        List<Log> GetById(string ip, string db, string table, int startId, int finishId);
+
     }
 }

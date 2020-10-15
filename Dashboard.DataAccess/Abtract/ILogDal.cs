@@ -17,5 +17,6 @@ namespace Dashboard.DataAccess.Abtract
         TimeSpan GetSpendTimes(string serverIp, string serverDb, string tableName, string ip, string day);
         TimeSpan GetHoursByHours(string ip, string db, string tableName,string state, string day, string hour);
         Log GetLastLog(string ip, string db, string tableName);
+        List<Log> GetById(string ip, string db, string table, int startId, int finishId);
     }
 }

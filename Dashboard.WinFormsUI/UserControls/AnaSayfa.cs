@@ -142,7 +142,7 @@ namespace Dashboard.WinFormsUI.UserControls
                 TextBox tbWorkOrderNo = new TextBox();
                 lblCalismaSuresi.Name = i.ToString();
                 tbWorkOrderNo.Size = new Size(180,20);
-                tbWorkOrderNo.Location = new Point(10,155);
+                tbWorkOrderNo.Location = new Point(10,150);
                 _tbWorkOrderNo.Add(tbWorkOrderNo);
                 gb.Controls.Add(tbWorkOrderNo);
 
@@ -154,25 +154,38 @@ namespace Dashboard.WinFormsUI.UserControls
                 btn1.FlatStyle = FlatStyle.Flat;
                 btn1.FlatAppearance.BorderSize = 0;
                 btn1.BackColor = (i % 2 == 0) ? Color.FromArgb(118, 115, 179) : Color.FromArgb(98, 150, 204);
+                btn1.Dock = DockStyle.Bottom;
                 btn1.Click += new EventHandler(this.btn_click);
                 gb.Controls.Add(btn1);
 
                 Button btnBasla = new Button();
                 btnBasla.Name = i.ToString();
                 btnBasla.Text = "Başlat";
-                btnBasla.Size = new Size(70, 30);
-                btnBasla.Location = new Point(20, 180);
+                btnBasla.Size = new Size(60, 30);
+                btnBasla.Location = new Point(5, 180);
                 btnBasla.FlatStyle = FlatStyle.Flat;
                 btnBasla.FlatAppearance.BorderSize = 0;
                 btnBasla.BackColor = Color.FromArgb(102, 187, 106);
                 btnBasla.Click += new EventHandler(this.btnBasla_click);
                 gb.Controls.Add(btnBasla);
 
+                Button btnWorkOrders = new Button();
+                btnWorkOrders.Name = i.ToString();
+                btnWorkOrders.Text = "İşEmirleri";
+                btnWorkOrders.Size = new Size(60, 30);
+                btnWorkOrders.Location = new Point(70, 180);
+                btnWorkOrders.FlatStyle = FlatStyle.Flat;
+                btnWorkOrders.Font = new Font("Arial",8);
+                btnWorkOrders.FlatAppearance.BorderSize = 0;
+                btnWorkOrders.BackColor = Color.FromArgb(84, 110, 122);
+                btnWorkOrders.Click += new EventHandler(this.btnWorkOrders_click);
+                gb.Controls.Add(btnWorkOrders);
+
                 Button btnBitir = new Button();
                 btnBitir.Name = i.ToString();
                 btnBitir.Text = "Bitir";
-                btnBitir.Size = new Size(70, 30);
-                btnBitir.Location = new Point(110, 180);
+                btnBitir.Size = new Size(60, 30);
+                btnBitir.Location = new Point(135, 180);
                 btnBitir.FlatStyle = FlatStyle.Flat;
                 btnBitir.FlatAppearance.BorderSize = 0;
                 btnBitir.BackColor =  Color.FromArgb(229, 57, 53);
@@ -183,36 +196,59 @@ namespace Dashboard.WinFormsUI.UserControls
             }
         }
 
-        private void btnBitir_click(object sender, EventArgs e)
+        private void btnWorkOrders_click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
             int index = Convert.ToInt32(btn.Name.ToString());
             List<Machine> machines = new List<Machine>();
             machines = GetMachines();
-            Machine machine = machines[index];
-
-            Log lastLog = _logService.GetLastLog(machine.Ip, _raspiDb, "Logs");
-            TimeSpan time = DateTime.Now.Subtract(lastLog.Date);
-            Log log = new Log
+            IsEmirleri im = new IsEmirleri
             {
-                Name = lastLog.Name,
-                LastState = lastLog.State,
-                LastDate = lastLog.Date,
-                State = lastLog.State,
-                Time = time,
-                Shift = lastLog.Shift
+                Machine = machines[index]
             };
-            _logService.Add(log, machine);
-            int id = lastLog.Id + 1;
-            string workOrderNo = _tbWorkOrderNo[index].Text;
-            WorkOrderState workOrderState = new WorkOrderState
-            {
-                Id = id,
-                WorkOrderNo = workOrderNo,
-                State = "finish"
-            };
-            _workOrderStateService.Add(workOrderState, machine);
+            timerDbCheck.Enabled = false;
+            timerDbCheck.Stop();
+            panelMain.Controls.Clear();
+            panelMain.Controls.Add(im);
+            im.Show();
+            im.Dock = DockStyle.Fill;
+            im.BringToFront();
+        }
 
+        private void btnBitir_click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            int index = Convert.ToInt32(btn.Name.ToString());
+            if (!string.IsNullOrWhiteSpace(_tbWorkOrderNo[index].Text))
+            {
+                List<Machine> machines = new List<Machine>();
+                machines = GetMachines();
+                Machine machine = machines[index];
+
+                Log lastLog = _logService.GetLastLog(machine.Ip, _raspiDb, "Logs");
+                TimeSpan time = DateTime.Now.Subtract(lastLog.Date);
+                Log log = new Log
+                {
+                    Name = lastLog.Name,
+                    LastState = lastLog.State,
+                    LastDate = lastLog.Date,
+                    State = lastLog.State,
+                    Time = time,
+                    Shift = lastLog.Shift
+                };
+                _logService.Add(log, machine);
+                int id = lastLog.Id + 1;
+                string workOrderNo = _tbWorkOrderNo[index].Text;
+                WorkOrderState workOrderState = new WorkOrderState
+                {
+                    Id = id,
+                    WorkOrderNo = workOrderNo,
+                    State = "finish"
+                };
+                _workOrderStateService.Add(workOrderState, machine);
+                _tbWorkOrderNo[index].Text = "";
+
+            }
 
         }
 
@@ -220,38 +256,42 @@ namespace Dashboard.WinFormsUI.UserControls
         {
             Button btn = sender as Button;
             int index = Convert.ToInt32(btn.Name.ToString());
-            List<Machine> machines = new List<Machine>();
-            machines = GetMachines();
-            Machine machine = machines[index];
-
-            Log lastLog  = _logService.GetLastLog(machine.Ip,_raspiDb,"Logs");
-            TimeSpan time = DateTime.Now.Subtract(lastLog.Date);
-            Log log = new Log
+            if (!string.IsNullOrWhiteSpace(_tbWorkOrderNo[index].Text))
             {
-                Name=lastLog.Name,
-                LastState=lastLog.State,
-                LastDate=lastLog.Date,
-                State=lastLog.State,
-                Time=time,
-                Shift=lastLog.Shift
-            };
-            _logService.Add(log,machine);
-            int id = lastLog.Id + 1;
-            string workOrderNo = _tbWorkOrderNo[index].Text;
-            WorkOrderState workOrderState = new WorkOrderState
-            {
-                Id=id,
-                WorkOrderNo = workOrderNo,
-                State = "start"
-            };
-            _workOrderStateService.Add(workOrderState,machine);
+                List<Machine> machines = new List<Machine>();
+                machines = GetMachines();
+                Machine machine = machines[index];
 
+                Log lastLog = _logService.GetLastLog(machine.Ip, _raspiDb, "Logs");
+                TimeSpan time = DateTime.Now.Subtract(lastLog.Date);
+                Log log = new Log
+                {
+                    Name = lastLog.Name,
+                    LastState = lastLog.State,
+                    LastDate = lastLog.Date,
+                    State = lastLog.State,
+                    Time = time,
+                    Shift = lastLog.Shift
+                };
+                _logService.Add(log, machine);
+                int id = lastLog.Id + 1;
+                string workOrderNo = _tbWorkOrderNo[index].Text;
+                WorkOrderState workOrderState = new WorkOrderState
+                {
+                    Id = id,
+                    WorkOrderNo = workOrderNo,
+                    State = "start"
+                };
+                _workOrderStateService.Add(workOrderState, machine);
+                _tbWorkOrderNo[index].Text = "";
+            }
         }
 
         private void btn_click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
             int index = Convert.ToInt32(btn.Name.ToString());
+           
             List<Machine> machines = new List<Machine>();
             machines = GetMachines();           
             Detay dt = new Detay

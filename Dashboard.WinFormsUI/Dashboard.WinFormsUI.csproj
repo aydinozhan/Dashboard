@@ -108,6 +108,12 @@
     <Compile Include="UserControls\Detay.Designer.cs">
       <DependentUpon>Detay.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\IsEmirleri.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\IsEmirleri.Designer.cs">
+      <DependentUpon>IsEmirleri.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Makineler.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -138,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Detay.resx">
       <DependentUpon>Detay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\IsEmirleri.resx">
+      <DependentUpon>IsEmirleri.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\Makineler.resx">
       <DependentUpon>Makineler.cs</DependentUpon>
